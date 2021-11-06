@@ -20,7 +20,7 @@ mixin {
     add sourceSets.main, "piercearrow.refmap.json"
 }
 
-version = '1.0'
+version = '1.17.1-0.1.0'
 group = 'baguchan.piercearrow' // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = 'piercearrow'
 
