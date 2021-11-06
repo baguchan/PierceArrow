@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "baguchan.piercearrow.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "piercearrow.refmap.json",
+  "client": [
+    "client.HumanoidModelMixin",
+    "client.QuadrupedModelMixin"
+  ],
+  "minVersion": "0.8"
+}
