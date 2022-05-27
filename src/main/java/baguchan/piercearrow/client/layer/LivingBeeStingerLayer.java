@@ -1,22 +1,19 @@
 package baguchan.piercearrow.client.layer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Matrix3f;
-import com.mojang.math.Matrix4f;
-import com.mojang.math.Vector3f;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.renderer.MultiBufferSource;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.BeeStingerLayer;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.vector.Matrix3f;
+import net.minecraft.util.math.vector.Matrix4f;
+import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -24,7 +21,7 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 public class LivingBeeStingerLayer<T extends LivingEntity, M extends EntityModel<T>> extends LivingStuckInBodyLayer<T, M> {
 	private static final ResourceLocation BEE_STINGER_LOCATION = new ResourceLocation("textures/entity/bee/bee_stinger.png");
 
-	public LivingBeeStingerLayer(LivingEntityRenderer<T, M> p_174466_) {
+	public LivingBeeStingerLayer(LivingRenderer<T, M> p_174466_) {
 		super(p_174466_);
 	}
 
@@ -32,10 +29,10 @@ public class LivingBeeStingerLayer<T extends LivingEntity, M extends EntityModel
 		return p_116567_.getArrowCount();
 	}
 
-	protected void renderStuckItem(PoseStack p_116584_, MultiBufferSource p_116585_, int p_116586_, Entity p_116587_, float p_116588_, float p_116589_, float p_116590_, float p_116591_) {
-		float f = Mth.sqrt(p_116588_ * p_116588_ + p_116590_ * p_116590_);
-		float f1 = (float)(Math.atan2((double)p_116588_, (double)p_116590_) * (double)(180F / (float)Math.PI));
-		float f2 = (float)(Math.atan2((double)p_116589_, (double)f) * (double)(180F / (float)Math.PI));
+	protected void renderStuckItem(MatrixStack p_116584_, IRenderTypeBuffer p_116585_, int p_116586_, Entity p_116587_, float p_116588_, float p_116589_, float p_116590_, float p_116591_) {
+		float f = MathHelper.sqrt(p_116588_ * p_116588_ + p_116590_ * p_116590_);
+		float f1 = (float) (Math.atan2((double) p_116588_, (double) p_116590_) * (double) (180F / (float) Math.PI));
+		float f2 = (float) (Math.atan2((double) p_116589_, (double) f) * (double) (180F / (float) Math.PI));
 		p_116584_.translate(0.0D, 0.0D, 0.0D);
 		p_116584_.mulPose(Vector3f.YP.rotationDegrees(f1 - 90.0F));
 		p_116584_.mulPose(Vector3f.ZP.rotationDegrees(f2));
@@ -47,11 +44,11 @@ public class LivingBeeStingerLayer<T extends LivingEntity, M extends EntityModel
 		p_116584_.mulPose(Vector3f.XP.rotationDegrees(45.0F));
 		p_116584_.scale(0.03125F, 0.03125F, 0.03125F);
 		p_116584_.translate(2.5D, 0.0D, 0.0D);
-		VertexConsumer vertexconsumer = p_116585_.getBuffer(RenderType.entityCutoutNoCull(BEE_STINGER_LOCATION));
+		IVertexBuilder vertexconsumer = p_116585_.getBuffer(RenderType.entityCutoutNoCull(BEE_STINGER_LOCATION));
 
 		for(int i = 0; i < 4; ++i) {
 			p_116584_.mulPose(Vector3f.XP.rotationDegrees(90.0F));
-			PoseStack.Pose posestack$pose = p_116584_.last();
+			MatrixStack.Entry posestack$pose = p_116584_.last();
 			Matrix4f matrix4f = posestack$pose.pose();
 			Matrix3f matrix3f = posestack$pose.normal();
 			vertex(vertexconsumer, matrix4f, matrix3f, -4.5F, -1, 0.0F, 0.0F, p_116586_);
@@ -62,7 +59,7 @@ public class LivingBeeStingerLayer<T extends LivingEntity, M extends EntityModel
 
 	}
 
-	private static void vertex(VertexConsumer p_116593_, Matrix4f p_116594_, Matrix3f p_116595_, float p_116596_, int p_116597_, float p_116598_, float p_116599_, int p_116600_) {
-		p_116593_.vertex(p_116594_, p_116596_, (float)p_116597_, 0.0F).color(255, 255, 255, 255).uv(p_116598_, p_116599_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_116600_).normal(p_116595_, 0.0F, 1.0F, 0.0F).endVertex();
+	private static void vertex(IVertexBuilder p_116593_, Matrix4f p_116594_, Matrix3f p_116595_, float p_116596_, int p_116597_, float p_116598_, float p_116599_, int p_116600_) {
+		p_116593_.vertex(p_116594_, p_116596_, (float) p_116597_, 0.0F).color(255, 255, 255, 255).uv(p_116598_, p_116599_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_116600_).normal(p_116595_, 0.0F, 1.0F, 0.0F).endVertex();
 	}
 }

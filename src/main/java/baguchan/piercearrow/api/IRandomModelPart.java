@@ -1,9 +1,9 @@
 package baguchan.piercearrow.api;
 
+import net.minecraft.client.renderer.model.ModelRenderer;
+
 import java.util.Random;
 
-import net.minecraft.client.model.geom.ModelPart;
-
 public interface IRandomModelPart {
-	ModelPart getRandomModelPart(Random paramRandom);
+	ModelRenderer getRandomModelPart(Random paramRandom);
 }

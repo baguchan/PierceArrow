@@ -1,57 +1,57 @@
 package baguchan.piercearrow.client.layer;
 
 import baguchan.piercearrow.api.IRandomModelPart;
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import com.mojang.blaze3d.matrix.MatrixStack;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.entity.LivingRenderer;
+import net.minecraft.client.renderer.entity.layers.LayerRenderer;
+import net.minecraft.client.renderer.entity.model.EntityModel;
+import net.minecraft.client.renderer.model.ModelRenderer;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.math.MathHelper;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
-public abstract class LivingStuckInBodyLayer <T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
-	public LivingStuckInBodyLayer(LivingEntityRenderer<T, M> p_117564_) {
+public abstract class LivingStuckInBodyLayer<T extends LivingEntity, M extends EntityModel<T>> extends LayerRenderer<T, M> {
+	public LivingStuckInBodyLayer(LivingRenderer<T, M> p_117564_) {
 		super(p_117564_);
 	}
 
-	protected abstract int numStuck(T p_117565_);
+	protected abstract int numStuck(T p_225631_1_);
 
-	protected abstract void renderStuckItem(PoseStack p_117566_, MultiBufferSource p_117567_, int p_117568_, Entity p_117569_, float p_117570_, float p_117571_, float p_117572_, float p_117573_);
+	protected abstract void renderStuckItem(MatrixStack p_225632_1_, IRenderTypeBuffer p_225632_2_, int p_225632_3_, Entity p_225632_4_, float p_225632_5_, float p_225632_6_, float p_225632_7_, float p_225632_8_);
 
-	public void render(PoseStack p_117586_, MultiBufferSource p_117587_, int p_117588_, T p_117589_, float p_117590_, float p_117591_, float p_117592_, float p_117593_, float p_117594_, float p_117595_) {
-		if(this.getParentModel() instanceof IRandomModelPart) {
-			int i = this.numStuck(p_117589_);
-			Random random = new Random((long) p_117589_.getId());
-			if (i > 0) {
-				for (int j = 0; j < i; ++j) {
-					p_117586_.pushPose();
-					ModelPart modelpart = ((IRandomModelPart)this.getParentModel()).getRandomModelPart(random);
-					ModelPart.Cube modelpart$cube = modelpart.getRandomCube(random);
-					modelpart.translateAndRotate(p_117586_);
-					float f = random.nextFloat();
-					float f1 = random.nextFloat();
-					float f2 = random.nextFloat();
-					float f3 = Mth.lerp(f, modelpart$cube.minX, modelpart$cube.maxX) / 16.0F;
-					float f4 = Mth.lerp(f1, modelpart$cube.minY, modelpart$cube.maxY) / 16.0F;
-					float f5 = Mth.lerp(f2, modelpart$cube.minZ, modelpart$cube.maxZ) / 16.0F;
-					p_117586_.translate((double) f3, (double) f4, (double) f5);
-					f = -1.0F * (f * 2.0F - 1.0F);
-					f1 = -1.0F * (f1 * 2.0F - 1.0F);
-					f2 = -1.0F * (f2 * 2.0F - 1.0F);
-					this.renderStuckItem(p_117586_, p_117587_, p_117588_, p_117589_, f, f1, f2, p_117592_);
-					p_117586_.popPose();
+	public void render(MatrixStack p_225628_1_, IRenderTypeBuffer p_225628_2_, int p_225628_3_, T p_225628_4_, float p_225628_5_, float p_225628_6_, float p_225628_7_, float p_225628_8_, float p_225628_9_, float p_225628_10_) {
+		int i = this.numStuck(p_225628_4_);
+		Random random = new Random((long) p_225628_4_.getId());
+		if (i > 0) {
+			for (int j = 0; j < i; ++j) {
+				p_225628_1_.pushPose();
+				ModelRenderer modelrenderer = ((IRandomModelPart) this.getParentModel()).getRandomModelPart(random);
+				if (modelrenderer != null) {
+					ModelRenderer.ModelBox modelrenderer$modelbox = modelrenderer.getRandomCube(random);
+					if (modelrenderer$modelbox != null) {
+						modelrenderer.translateAndRotate(p_225628_1_);
+						float f = random.nextFloat();
+						float f1 = random.nextFloat();
+						float f2 = random.nextFloat();
+						float f3 = MathHelper.lerp(f, modelrenderer$modelbox.minX, modelrenderer$modelbox.maxX) / 16.0F;
+						float f4 = MathHelper.lerp(f1, modelrenderer$modelbox.minY, modelrenderer$modelbox.maxY) / 16.0F;
+						float f5 = MathHelper.lerp(f2, modelrenderer$modelbox.minZ, modelrenderer$modelbox.maxZ) / 16.0F;
+						p_225628_1_.translate((double) f3, (double) f4, (double) f5);
+						f = -1.0F * (f * 2.0F - 1.0F);
+						f1 = -1.0F * (f1 * 2.0F - 1.0F);
+						f2 = -1.0F * (f2 * 2.0F - 1.0F);
+						this.renderStuckItem(p_225628_1_, p_225628_2_, p_225628_3_, p_225628_4_, f, f1, f2, p_225628_7_);
+					}
 				}
-
+				p_225628_1_.popPose();
 			}
+
 		}
 	}
 }
