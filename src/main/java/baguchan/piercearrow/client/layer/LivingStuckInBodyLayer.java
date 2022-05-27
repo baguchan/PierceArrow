@@ -1,5 +1,6 @@
 package baguchan.piercearrow.client.layer;
 
+import baguchan.piercearrow.api.ICubes;
 import baguchan.piercearrow.api.IRandomModelPart;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
@@ -32,7 +33,7 @@ public abstract class LivingStuckInBodyLayer<T extends LivingEntity, M extends E
 			for (int j = 0; j < i; ++j) {
 				p_225628_1_.pushPose();
 				ModelRenderer modelrenderer = ((IRandomModelPart) this.getParentModel()).getRandomModelPart(random);
-				if (modelrenderer != null) {
+				if (modelrenderer != null && !((ICubes) modelrenderer).isEmpty()) {
 					ModelRenderer.ModelBox modelrenderer$modelbox = modelrenderer.getRandomCube(random);
 					if (modelrenderer$modelbox != null) {
 						modelrenderer.translateAndRotate(p_225628_1_);
