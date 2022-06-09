@@ -2,20 +2,17 @@ package baguchan.piercearrow.client.layer;
 
 import baguchan.piercearrow.api.IRandomModelPart;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
-import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-
-import java.util.Random;
 
 @OnlyIn(Dist.CLIENT)
 public abstract class LivingStuckInBodyLayer <T extends LivingEntity, M extends EntityModel<T>> extends RenderLayer<T, M> {
@@ -30,16 +27,16 @@ public abstract class LivingStuckInBodyLayer <T extends LivingEntity, M extends 
 	public void render(PoseStack p_117586_, MultiBufferSource p_117587_, int p_117588_, T p_117589_, float p_117590_, float p_117591_, float p_117592_, float p_117593_, float p_117594_, float p_117595_) {
 		if(this.getParentModel() instanceof IRandomModelPart) {
 			int i = this.numStuck(p_117589_);
-			Random random = new Random((long) p_117589_.getId());
+			RandomSource randomsource = RandomSource.create((long) p_117589_.getId());
 			if (i > 0) {
 				for (int j = 0; j < i; ++j) {
 					p_117586_.pushPose();
-					ModelPart modelpart = ((IRandomModelPart)this.getParentModel()).getRandomModelPart(random);
-					ModelPart.Cube modelpart$cube = modelpart.getRandomCube(random);
+					ModelPart modelpart = ((IRandomModelPart) this.getParentModel()).getRandomModelPart(randomsource);
+					ModelPart.Cube modelpart$cube = modelpart.getRandomCube(randomsource);
 					modelpart.translateAndRotate(p_117586_);
-					float f = random.nextFloat();
-					float f1 = random.nextFloat();
-					float f2 = random.nextFloat();
+					float f = randomsource.nextFloat();
+					float f1 = randomsource.nextFloat();
+					float f2 = randomsource.nextFloat();
 					float f3 = Mth.lerp(f, modelpart$cube.minX, modelpart$cube.maxX) / 16.0F;
 					float f4 = Mth.lerp(f1, modelpart$cube.minY, modelpart$cube.maxY) / 16.0F;
 					float f5 = Mth.lerp(f2, modelpart$cube.minZ, modelpart$cube.maxZ) / 16.0F;

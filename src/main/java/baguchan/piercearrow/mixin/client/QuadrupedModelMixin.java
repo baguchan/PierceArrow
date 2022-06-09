@@ -2,19 +2,15 @@ package baguchan.piercearrow.mixin.client;
 
 import baguchan.piercearrow.api.IRandomModelPart;
 import com.google.common.collect.ImmutableList;
-import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.QuadrupedModel;
 import net.minecraft.client.model.geom.ModelPart;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.List;
-import java.util.Random;
-import java.util.function.Function;
 
 @Mixin(QuadrupedModel.class)
 public class QuadrupedModelMixin implements IRandomModelPart {
@@ -28,7 +24,7 @@ public class QuadrupedModelMixin implements IRandomModelPart {
 		}).collect(ImmutableList.toImmutableList());
 	}
 
-	public ModelPart getRandomModelPart(Random p_103407_) {
+	public ModelPart getRandomModelPart(RandomSource p_103407_) {
 		return this.parts.get(p_103407_.nextInt(this.parts.size()));
 	}
 }
