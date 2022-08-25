@@ -5,7 +5,8 @@
   "refmap": "piercearrow.refmap.json",
   "client": [
     "client.HumanoidModelMixin",
-    "client.QuadrupedModelMixin"
+    "client.QuadrupedModelMixin",
+    "client.HierarchicalModelMixin"
   ],
   "minVersion": "0.8"
 }
