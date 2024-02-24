@@ -26,7 +26,7 @@ public class LivingBeeStingerLayer<T extends LivingEntity, M extends EntityModel
 	}
 
 	protected int numStuck(T p_116567_) {
-		return p_116567_.getArrowCount();
+		return p_116567_.getStingerCount();
 	}
 
 	protected void renderStuckItem(PoseStack p_116584_, MultiBufferSource p_116585_, int p_116586_, Entity p_116587_, float p_116588_, float p_116589_, float p_116590_, float p_116591_) {

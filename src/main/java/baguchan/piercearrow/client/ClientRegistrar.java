@@ -2,9 +2,9 @@ package baguchan.piercearrow.client;
 
 import baguchan.piercearrow.PierceArrow;
 import baguchan.piercearrow.client.layer.LivingArrowLayer;
+import baguchan.piercearrow.client.layer.LivingBeeStingerLayer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.BeeStingerLayer;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -20,7 +20,7 @@ public class ClientRegistrar {
 		Minecraft.getInstance().getEntityRenderDispatcher().renderers.values().forEach(r -> {
 			if (r instanceof LivingEntityRenderer) {
 				((LivingEntityRenderer) r).addLayer(new LivingArrowLayer(Minecraft.getInstance().getEntityRenderDispatcher(), ((LivingEntityRenderer) r)));
-				((LivingEntityRenderer) r).addLayer(new BeeStingerLayer(((LivingEntityRenderer) r)));
+				((LivingEntityRenderer) r).addLayer(new LivingBeeStingerLayer(((LivingEntityRenderer) r)));
 			}
 		});
 	}
